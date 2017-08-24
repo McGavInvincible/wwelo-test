@@ -19,6 +19,8 @@ defmodule WweloTestWeb.Router do
     get "/", PageController, :index
     get "/hello", HelloController, :index
     get "/hello/:messenger", HelloController, :show
+    resources "/wrestlers", WrestlerController, only: [:index, :show]
+    get "/json/:id", JsonController, :show
   end
 
   # Other scopes may use custom stacks.
