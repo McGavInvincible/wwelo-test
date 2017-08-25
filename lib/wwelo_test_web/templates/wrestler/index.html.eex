@@ -1,0 +1,28 @@
+<h2>Listing Wrestlers</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Current elo</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for wrestler <- @wrestlers do %>
+    <tr>
+      <td><%= wrestler.name %></td>
+      <td><%= wrestler.current_elo %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: wrestler_path(@conn, :show, wrestler), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: wrestler_path(@conn, :edit, wrestler), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: wrestler_path(@conn, :delete, wrestler), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Wrestler", to: wrestler_path(@conn, :new) %></span>

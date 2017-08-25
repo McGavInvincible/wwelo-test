@@ -3,11 +3,12 @@ defmodule WweloTest.Repo.Migrations.CreateWrestlers do
 
   def change do
     create table(:wrestlers) do
-      add :wrestler_name, :string
+      add :name, :string
       add :current_elo, :integer
 
       timestamps()
     end
 
+    create unique_index(:wrestlers, [:name])
   end
 end

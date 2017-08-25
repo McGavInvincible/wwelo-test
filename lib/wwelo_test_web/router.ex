@@ -17,10 +17,7 @@ defmodule WweloTestWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/hello", HelloController, :index
-    get "/hello/:messenger", HelloController, :show
-    resources "/wrestlers", WrestlerController, only: [:index, :show]
-    get "/json/:id", JsonController, :show
+    resources "/wrestlers", WrestlerController
   end
 
   # Other scopes may use custom stacks.

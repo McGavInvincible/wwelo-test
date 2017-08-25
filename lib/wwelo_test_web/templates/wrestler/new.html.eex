@@ -1,0 +1,5 @@
+<h2>New Wrestler</h2>
+
+<%= render "form.html", Map.put(assigns, :action, wrestler_path(@conn, :create)) %>
+
+<span><%= link "Back", to: wrestler_path(@conn, :index) %></span>

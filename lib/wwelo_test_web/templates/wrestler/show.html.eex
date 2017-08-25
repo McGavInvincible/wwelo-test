@@ -1,0 +1,18 @@
+<h2>Show Wrestler</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @wrestler.name %>
+  </li>
+
+  <li>
+    <strong>Current elo:</strong>
+    <%= @wrestler.current_elo %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: wrestler_path(@conn, :edit, @wrestler) %></span>
+<span><%= link "Back", to: wrestler_path(@conn, :index) %></span>
