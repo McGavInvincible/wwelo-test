@@ -6,7 +6,6 @@ defmodule WweloTest.Wrestler do
 
   schema "wrestlers" do
     field :current_elo, :integer
-    field :wrestler_id, :integer
     field :wrestler_name, :string
 
     timestamps()
@@ -15,7 +14,7 @@ defmodule WweloTest.Wrestler do
   @doc false
   def changeset(%Wrestler{} = wrestler, attrs) do
     wrestler
-    |> cast(attrs, [:wrestler_id, :wrestler_name, :current_elo])
-    |> validate_required([:wrestler_id, :wrestler_name, :current_elo])
+    |> cast(attrs, [:wrestler_name, :current_elo])
+    |> validate_required([:wrestler_name, :current_elo])
   end
 end

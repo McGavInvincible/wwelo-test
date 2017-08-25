@@ -3,7 +3,6 @@ defmodule WweloTest.Repo.Migrations.CreateWrestlers do
 
   def change do
     create table(:wrestlers) do
-      add :wrestler_id, :integer
       add :wrestler_name, :string
       add :current_elo, :integer
 
