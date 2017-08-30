@@ -17,7 +17,7 @@ defmodule WweloTestWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    resources "/wrestlers", WrestlerController, :index
+    resources "/wrestlers", WrestlerController
   end
 
   # Other scopes may use custom stacks.
