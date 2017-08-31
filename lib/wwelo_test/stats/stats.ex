@@ -102,10 +102,4 @@ defmodule WweloTest.Stats do
     Wrestler.changeset(wrestler, %{})
   end
 
-# response=HTTPoison.get!("https://www.cagematch.net/?id=112&view=search&sParticipant1=&sParticipant2=&sParticipant3=&sParticipant4=&sEventName=&sEventType=TV-Show%7CPay+Per+View&sDateFromDay=01&sDateFromMonth=01&sDateFromYear=2017&sDateTillDay=31&sDateTillMonth=12&sDateTillYear=2017&sPromotion=1&sLocation=&sArena=&sRegion=&sMatchType=&sConstellation=&sWorkerRelationship=Any&sFulltextSearch=")
-# html=Floki.parse(response.body)  
-# matches=Floki.find(html, ".TBase")
-# matchcards=Floki.find(matches, ".MatchCard")
-# {_, _, [name]} = Enum.at(matchcards,2) |> elem(2) |> Enum.at(0)
-
 end
