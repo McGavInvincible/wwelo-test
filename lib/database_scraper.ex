@@ -7,15 +7,23 @@ defmodule DatabaseScraper do
       |> Floki.find(".TBase")
       |> Enum.at(0)
       |> elem(2)
-      |> Enum.map(fn(x) -> elem(x,2) end)
+      |> Enum.map(fn(x) -> elem(x, 2) end)
 
     singles_table_contents = tl(table_contents)
-      |> Enum.filter(fn(x) -> Enum.at(x,3)
+      |> Enum.filter(fn(x) -> Enum.at(x, 3)
       |> Floki.find(".MatchCard")
       |> Enum.at(0)
       |> elem(2)
       |> Enum.filter(fn(y) -> is_tuple(y) end)
-      |> Enum.filter(fn(z) -> elem(z,0) == "a" end)
+      |> Enum.filter(fn(z) -> elem(z, 0) == "a" end)
       |> length == 2 end)
+
+    dates = Enum.map(singles_table_contents, fn(x) -> Enum.at(x, 1) |> elem(2) |> Enum.at(0) end)
+
+    matchcards = Enum.map(singles_table_contents, fn(x) -> Floki.find(x, ".MatchCard") end)
+
+    winners = Enum.map(matchcards, fn(x) -> Enum.at(x, 0) |> elem(2) |> Enum.at(0) |> elem(2) |> Enum.at(0) end)
+    losers = Enum.map(matchcards, fn(x) -> Enum.at(x, 0) |> elem(2) |> Enum.at(2) |> elem(2) |> Enum.at(0) end)
    end
+
 end
