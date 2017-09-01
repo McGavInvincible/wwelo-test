@@ -18,6 +18,7 @@ defmodule WweloTestWeb.Router do
 
     get "/", PageController, :index
     resources "/wrestlers", WrestlerController
+    resources "/matches", MatchesController
   end
 
   # Other scopes may use custom stacks.
