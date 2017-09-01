@@ -1,0 +1,5 @@
+<h2>Edit Matches</h2>
+
+<%= render "form.html", Map.put(assigns, :action, matches_path(@conn, :update, @matches)) %>
+
+<span><%= link "Back", to: matches_path(@conn, :index) %></span>

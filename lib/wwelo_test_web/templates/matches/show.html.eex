@@ -1,0 +1,33 @@
+<h2>Show Matches</h2>
+
+<ul>
+
+  <li>
+    <strong>Date:</strong>
+    <%= @matches.date %>
+  </li>
+
+  <li>
+    <strong>Winner:</strong>
+    <%= @matches.winner %>
+  </li>
+
+  <li>
+    <strong>Winner elo:</strong>
+    <%= @matches.winner_elo %>
+  </li>
+
+  <li>
+    <strong>Loser:</strong>
+    <%= @matches.loser %>
+  </li>
+
+  <li>
+    <strong>Loser elo:</strong>
+    <%= @matches.loser_elo %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: matches_path(@conn, :edit, @matches) %></span>
+<span><%= link "Back", to: matches_path(@conn, :index) %></span>

@@ -1,0 +1,34 @@
+<h2>Listing Matches</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Winner</th>
+      <th>Winner elo</th>
+      <th>Loser</th>
+      <th>Loser elo</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for matches <- @matches do %>
+    <tr>
+      <td><%= matches.date %></td>
+      <td><%= matches.winner %></td>
+      <td><%= matches.winner_elo %></td>
+      <td><%= matches.loser %></td>
+      <td><%= matches.loser_elo %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: matches_path(@conn, :show, matches), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: matches_path(@conn, :edit, matches), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: matches_path(@conn, :delete, matches), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Matches", to: matches_path(@conn, :new) %></span>

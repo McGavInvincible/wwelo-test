@@ -7,7 +7,8 @@ defmodule WweloTest.Stats do
   alias WweloTest.Repo
 
   alias WweloTest.Stats.Wrestler
-
+  alias WweloTest.Stats.Matches
+  
   @doc """
   Returns the list of wrestlers.
 
@@ -102,4 +103,29 @@ defmodule WweloTest.Stats do
     Wrestler.changeset(wrestler, %{})
   end
 
+  def list_matches do
+    Repo.all(Matches)
+  end
+
+  def get_matches!(id), do: Repo.get!(Matches, id)
+
+  def create_matches(attrs \\ %{}) do
+    %Matches{}
+    |> Matches.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_matches(%Matches{} = matches, attrs) do
+    matches
+    |> Matches.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def delete_matches(%Matches{} = matches) do
+    Repo.delete(matches)
+  end
+
+  def change_matches(%Matches{} = matches) do
+    Matches.changeset(matches, %{})
+  end
 end
