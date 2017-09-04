@@ -24,6 +24,17 @@ defmodule DatabaseScraper do
 
     winners = Enum.map(matchcards, fn(x) -> Enum.at(x, 0) |> elem(2) |> Enum.at(0) |> elem(2) |> Enum.at(0) end)
     losers = Enum.map(matchcards, fn(x) -> Enum.at(x, 0) |> elem(2) |> Enum.at(2) |> elem(2) |> Enum.at(0) end)
+
+    singles_table_contents
+   end
+
+   def save_matches_to_database([_, {_, _, [date]}, _, matchcard, _]) do
+     matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2)
+
+    {_, _, [winner]} = Enum.at(matchcard, 0)
+    {_, _, [loser]} = Enum.at(matchcard, 2)
+
+    {winner, loser, date}
    end
 
 end
