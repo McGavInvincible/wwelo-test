@@ -1,6 +1,10 @@
 defmodule DatabaseScraper do
 
+  import Ecto.Query, warn: false
+
+  alias WweloTest.Repo
   alias WweloTest.Stats
+  alias WweloTest.Stats.Wrestler
 
   def save_singles_matches do
     Enum.map(list_of_singles_matches(), fn(x) -> save_matches_to_database(x) end)
@@ -40,6 +44,15 @@ defmodule DatabaseScraper do
       {_, _, [loser]} = Enum.at(matchcard, 2)
 
       Stats.create_matches(%{"winner" => winner, "winner_elo" => 0, "loser" => loser, "loser_elo" => 0, "date" => date})
+
+      save_wrestler_to_database(Repo.get_by(Wrestler, name: winner), winner)
+      save_wrestler_to_database(Repo.get_by(Wrestler, name: loser), loser)
+   end
+
+   def save_wrestler_to_database(nil, name) do
+      Stats.create_wrestler(%{"name" => name, "current_elo" => 0})
+   end
+   def save_wrestler_to_database(_, _) do
    end
 
 end
