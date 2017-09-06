@@ -1,6 +1,6 @@
 defmodule DatabaseScraper do
 
-  import Ecto.Query, warn: false
+  # import Ecto.Query, warn: false
 
   alias WweloTest.Repo
   alias WweloTest.Stats
@@ -38,6 +38,10 @@ defmodule DatabaseScraper do
    end
 
    def save_matches_to_database([_, {_, _, [date]}, _, matchcard, _]) do
+
+     [day, month, year] = String.split(date, ".")
+     date = year <> month <> day
+
      matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2)
 
       {_, _, [winner]} = Enum.at(matchcard, 0)
@@ -50,7 +54,7 @@ defmodule DatabaseScraper do
    end
 
    def save_wrestler_to_database(nil, name) do
-      Stats.create_wrestler(%{"name" => name, "current_elo" => 0})
+      Stats.create_wrestler(%{"name" => name, "current_elo" => 1200})
    end
    def save_wrestler_to_database(_, _) do
    end
