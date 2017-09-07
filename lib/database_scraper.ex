@@ -8,6 +8,18 @@ defmodule DatabaseScraper do
     Enum.map(list_of_singles_matches(), fn(x) -> save_matches_to_database(x) end)
   end
 
+  def number_of_page_results do
+    response=HTTPoison.get!("https://www.cagematch.net/?id=112&view=search&sEventType=TV-Show|Pay%20Per%20View&sDateFromDay=01&sDateFromMonth=01&sDateFromYear=2017&sDateTillDay=31&sDateTillMonth=12&sDateTillYear=2017&sPromotion=1&sWorkerRelationship=Any&s=0")
+
+    Floki.find(response.body, ".TableHeaderOff")
+    |> Enum.uniq
+    |> Enum.map(fn(x) -> elem(x,2)
+    |> Enum.at(0)
+    |> Integer.parse end)
+    |> Enum.max
+    |> elem(0)
+  end
+
   def list_of_singles_matches do
     table_contents = get_table_contents("https://www.cagematch.net/?id=112&view=search&sEventType=TV-Show|Pay%20Per%20View&sDateFromDay=01&sDateFromMonth=01&sDateFromYear=2017&sDateTillDay=31&sDateTillMonth=12&sDateTillYear=2017&sPromotion=1&sWorkerRelationship=Any&s=0")
 
