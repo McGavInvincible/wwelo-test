@@ -19,7 +19,10 @@ defmodule WweloTest.Stats do
 
   """
   def list_wrestlers do
-    Repo.all(Wrestler)
+    elo_sort_query = from w in Wrestler,
+      order_by: [desc: w.current_elo]
+
+    Repo.all(elo_sort_query)
   end
 
   @doc """
