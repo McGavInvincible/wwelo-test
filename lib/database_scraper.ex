@@ -7,14 +7,14 @@ defmodule DatabaseScraper do
   # wwe_years = 1963..2017
   # https://www.cagematch.net/?id=112&view=search&sEventType=TV-Show|Pay%20Per%20View&sDateFromDay=01&sDateFromMonth=01&sDateFromYear=2017&sDateTillDay=31&sDateTillMonth=12&sDateTillYear=2017&sPromotion=1
 
-  def save_singles_matches(year, month) do
-    Enum.map(list_of_singles_matches(year, month, 1), fn(x) -> save_matches_to_database(x) end)
+  def save_singles_matches(year, month, page_number) do
+    Enum.map(list_of_singles_matches(year, month, page_number), fn(x) -> save_matches_to_database(x) end)
   end
   def save_singles_matches do
-    wwe_years = 2017..2017
-    months = 8..12
+    wwe_years = 1963..2017
+    months = 1..12
 
-    Enum.map(wwe_years, fn(year) -> Enum.map(months, fn(month) -> save_singles_matches(year, month) end) end)
+    Enum.map(wwe_years, fn(year) -> Enum.map(months, fn(month) -> Enum.map(1..number_of_page_results(year, month), fn(page_number) -> save_singles_matches(year, month, page_number) end) end) end)
   end
 
   def search_link(year, month, page_number) do
@@ -23,8 +23,8 @@ defmodule DatabaseScraper do
      "https://www.cagematch.net/?id=112&view=search&sEventType=TV-Show|Pay%20Per%20View&sDateFromDay=01&sDateFromMonth=#{month}&sDateFromYear=#{year}&sDateTillDay=31&sDateTillMonth=#{month}&sDateTillYear=#{year}&sPromotion=1&s=#{results_number}"
   end
 
-  def number_of_page_results(link) do
-    response=HTTPoison.get!(link)
+  def number_of_page_results(year, month) do
+    response=HTTPoison.get!(search_link(year, month, 1))
 
     Floki.find(response.body, ".NavigationPartPage")
     |> Enum.uniq
