@@ -8,7 +8,7 @@ defmodule WweloTest.Stats do
 
   alias WweloTest.Stats.Wrestler
   alias WweloTest.Stats.Matches
-  
+
   @doc """
   Returns the list of wrestlers.
 
