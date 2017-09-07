@@ -42,7 +42,8 @@ defmodule WweloTest.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
       {:httpoison, "~> 0.13"},
-      {:floki, "~> 0.18.0"}
+      {:floki, "~> 0.18.0"},
+      {:math, "~> 0.3.0"} 
     ]
   end
 

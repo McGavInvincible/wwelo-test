@@ -18,6 +18,6 @@ defmodule WweloTest.Stats.Matches do
   def changeset(%Matches{} = matches, attrs) do
     matches
     |> cast(attrs, [:date, :winner, :winner_elo, :loser, :loser_elo])
-    |> validate_required([:date, :winner, :winner_elo, :loser, :loser_elo])
+    |> validate_required([:date, :winner, :loser])
   end
 end
