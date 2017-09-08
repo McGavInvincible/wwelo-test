@@ -4,17 +4,30 @@ defmodule DatabaseScraper do
   alias WweloTest.Stats
   alias WweloTest.Stats.Wrestler
 
-  # wwe_years = 1963..2017
-  # https://www.cagematch.net/?id=112&view=search&sEventType=TV-Show|Pay%20Per%20View&sDateFromDay=01&sDateFromMonth=01&sDateFromYear=2017&sDateTillDay=31&sDateTillMonth=12&sDateTillYear=2017&sPromotion=1
-
   def save_singles_matches(year, month, page_number) do
-    Enum.map(list_of_singles_matches(year, month, page_number), fn(x) -> save_matches_to_database(x) end)
+    Enum.each(list_of_singles_matches(year, month, page_number), fn(match_list) ->
+      case match_list do
+        [] -> []
+        _ -> save_matches_to_database(match_list)
+      end
+    end)
   end
   def save_singles_matches do
     wwe_years = 1963..2017
     months = 1..12
 
-    Enum.map(wwe_years, fn(year) -> Enum.map(months, fn(month) -> Enum.map(1..number_of_page_results(year, month), fn(page_number) -> save_singles_matches(year, month, page_number) end) end) end)
+    Enum.each(wwe_years, fn(year) ->
+      IO.inspect(year)
+      Enum.each(months, fn(month) ->
+        page_results = number_of_page_results(year, month)
+        case page_results do
+            0 -> 0
+          _ -> Enum.each(1..page_results, fn(page_number) ->
+            save_singles_matches(year, month, page_number)
+            end)
+        end
+      end)
+    end)
   end
 
   def search_link(year, month, page_number) do
@@ -26,29 +39,38 @@ defmodule DatabaseScraper do
   def number_of_page_results(year, month) do
     response=HTTPoison.get!(search_link(year, month, 1))
 
-    Floki.find(response.body, ".NavigationPartPage")
+    list_of_pages = Floki.find(response.body, ".NavigationPartPage")
     |> Enum.uniq
     |> Enum.map(fn(x) -> elem(x,2)
     |> Enum.at(0)
     |> Integer.parse end)
-    |> Enum.max
-    |> elem(0)
+
+    case list_of_pages do
+      [] -> 1
+      _ -> Enum.max(list_of_pages) |> elem(0)
+    end
   end
 
   def list_of_singles_matches(year, month, page_number) do
     table_contents = get_table_contents(search_link(year, month, page_number))
 
-    get_singles_matches_from_table(table_contents)
+    case table_contents do
+      [] -> []
+      _ -> get_singles_matches_from_table(table_contents)
+    end
   end
 
   def get_table_contents(link) do
     response=HTTPoison.get!(link)
 
-    Floki.parse(response.body)
+    page_contents = Floki.parse(response.body)
     |> Floki.find(".TBase")
     |> Enum.at(0)
-    |> elem(2)
-    |> Enum.map(fn(x) -> elem(x, 2) end)
+
+    case page_contents do
+      nil -> []
+      _ -> elem(page_contents,2) |> Enum.map(fn(x) -> elem(x, 2) end)
+    end
   end
 
   def get_singles_matches_from_table(table_contents) do
@@ -67,7 +89,7 @@ defmodule DatabaseScraper do
     [day, month, year] = String.split(date, ".")
     date = year <> month <> day
 
-    matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2) |> IO.inspect
+    matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2)
 
     {winner, loser} = case matchcard do
       [{_, _, [winner]}, _, {_, _, [loser]}] -> {winner, loser}
@@ -82,6 +104,19 @@ defmodule DatabaseScraper do
       [_, {_, _, [winner]}, _, {_, _, [loser]}, _, _] -> {winner, loser}
       [{_, _, [winner]}, _, _, {_, _, [loser]}, _, _] -> {winner, loser}
       [_, {_, _, [winner]}, _, _, {_, _, [loser]}, _, _] -> {winner, loser}
+      [{_, _, [winner]}, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
+      [_, {_, _, [winner]}, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
+      [{_, _, [winner]}, _, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
+      [_, {_, _, [winner]}, _, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
+    end
+
+    winner = case String.valid?(winner) do
+      false -> Enum.join(for <<c::utf8 <- winner>>, do: <<c::utf8>>)
+      _ -> winner
+    end
+    loser = case String.valid?(loser) do
+      false -> Enum.join(for <<c::utf8 <- loser>>, do: <<c::utf8>>)
+      _ -> loser
     end
 
     Stats.create_matches(%{"winner" => winner, "loser" => loser, "date" => date})

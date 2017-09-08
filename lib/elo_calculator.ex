@@ -1,5 +1,7 @@
 defmodule EloCalculator do
 
+  @match_weight 32
+
   import Ecto.Query
 
   alias WweloTest.Repo
@@ -9,7 +11,7 @@ defmodule EloCalculator do
 
   def update_elos do
     list_of_ids_of_new_matches()
-    |> Enum.map(fn(x) -> update_match_and_wrestler_elo(x) end)
+    |> Enum.each(fn(x) -> update_match_and_wrestler_elo(x) end)
   end
 
   def elo_calculator(winner_elo, loser_elo) do
@@ -19,10 +21,8 @@ defmodule EloCalculator do
     ewinner = rwinner/(rwinner+rloser)
     eloser = rloser/(rwinner+rloser)
 
-    match_weight = 32
-
-    updated_winner_elo = winner_elo + match_weight*(1-ewinner)
-    updated_loser_elo = loser_elo + match_weight*(-eloser)
+    updated_winner_elo = winner_elo + @match_weight*(1-ewinner)
+    updated_loser_elo = loser_elo + @match_weight*(-eloser)
 
     %{winner_elo: round(updated_winner_elo), loser_elo: round(updated_loser_elo)}
   end
