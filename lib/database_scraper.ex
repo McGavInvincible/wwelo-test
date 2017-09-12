@@ -1,7 +1,10 @@
 defmodule DatabaseScraper do
 
+  import Ecto.Query
+
   alias WweloTest.Repo
   alias WweloTest.Stats
+  alias WweloTest.Stats.Matches
   alias WweloTest.Stats.Wrestler
 
   def save_singles_matches(year, month, page_number) do
@@ -119,10 +122,20 @@ defmodule DatabaseScraper do
       _ -> loser
     end
 
-    Stats.create_matches(%{"winner" => winner, "loser" => loser, "date" => date})
+    match_query = from m in Matches,
+      where: m.loser == ^loser and m.winner == ^winner and m.date == ^date,
+      select: m.id
+
+    save_match_to_database(Repo.all(match_query), winner, loser, date)
 
     save_wrestler_to_database(Repo.get_by(Wrestler, name: winner), winner)
     save_wrestler_to_database(Repo.get_by(Wrestler, name: loser), loser)
+  end
+
+  def save_match_to_database([], winner, loser, date) do
+    Stats.create_matches(%{"winner" => winner, "loser" => loser, "date" => date})
+  end
+  def save_match_to_database(_, _, _, _) do
   end
 
   def save_wrestler_to_database(nil, name) do
