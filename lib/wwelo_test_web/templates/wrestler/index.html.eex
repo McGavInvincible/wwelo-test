@@ -5,6 +5,8 @@
     <tr>
       <th>Name</th>
       <th>Current elo</th>
+      <th>Maximum elo</th>
+      <th>Minimum elo</th>
 
       <th></th>
     </tr>
@@ -14,6 +16,8 @@
     <tr>
       <td><%= wrestler.name %></td>
       <td><%= wrestler.current_elo %></td>
+      <td><%= wrestler.maximum_elo %></td>
+      <td><%= wrestler.minimum_elo %></td>
 
       <td class="text-right">
         <span><%= link "Show", to: wrestler_path(@conn, :show, wrestler), class: "btn btn-default btn-xs" %></span>

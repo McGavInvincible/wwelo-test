@@ -3,9 +3,9 @@ defmodule WweloTestWeb.WrestlerControllerTest do
 
   alias WweloTest.Stats
 
-  @create_attrs %{current_elo: 42, name: "some name"}
-  @update_attrs %{current_elo: 43, name: "some updated name"}
-  @invalid_attrs %{current_elo: nil, name: nil}
+  @create_attrs %{current_elo: 42, maximum_elo: 42, minimum_elo: 42, name: "some name"}
+  @update_attrs %{current_elo: 43, maximum_elo: 43, minimum_elo: 43, name: "some updated name"}
+  @invalid_attrs %{current_elo: nil, maximum_elo: nil, minimum_elo: nil, name: nil}
 
   def fixture(:wrestler) do
     {:ok, wrestler} = Stats.create_wrestler(@create_attrs)

@@ -42,8 +42,20 @@ defmodule EloCalculator do
     loser = Repo.get_by(Wrestler, name: current_match.loser)
 
     new_elos = elo_calculator(winner.current_elo, loser.current_elo)
-    Stats.update_wrestler(winner, %{"current_elo" => new_elos.winner_elo})
-    Stats.update_wrestler(loser, %{"current_elo" => new_elos.loser_elo})
+
+    cond do
+      new_elos.winner_elo > winner.maximum_elo ->
+        Stats.update_wrestler(winner, %{"current_elo" => new_elos.winner_elo, "maximum_elo" => new_elos.winner_elo})
+      true ->
+        Stats.update_wrestler(winner, %{"current_elo" => new_elos.winner_elo})
+    end
+    cond do
+      new_elos.loser_elo < loser.minimum_elo ->
+        Stats.update_wrestler(loser, %{"current_elo" => new_elos.loser_elo, "minimum_elo" => new_elos.loser_elo})
+      true ->
+        Stats.update_wrestler(loser, %{"current_elo" => new_elos.loser_elo})
+    end
+
     Stats.update_matches(current_match, %{"winner_elo" => new_elos.winner_elo, "loser_elo" => new_elos.loser_elo})
   end
 end

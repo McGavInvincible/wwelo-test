@@ -6,6 +6,8 @@ defmodule WweloTest.Stats.Wrestler do
 
   schema "wrestlers" do
     field :current_elo, :integer
+    field :maximum_elo, :integer
+    field :minimum_elo, :integer
     field :name, :string
 
     timestamps()
@@ -14,8 +16,8 @@ defmodule WweloTest.Stats.Wrestler do
   @doc false
   def changeset(%Wrestler{} = wrestler, attrs) do
     wrestler
-    |> cast(attrs, [:name, :current_elo])
-    |> validate_required([:name, :current_elo])
+    |> cast(attrs, [:name, :current_elo, :maximum_elo, :minimum_elo])
+    |> validate_required([:name, :current_elo, :maximum_elo, :minimum_elo])
     |> unique_constraint(:name)
   end
 end

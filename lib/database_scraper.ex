@@ -7,6 +7,8 @@ defmodule DatabaseScraper do
   alias WweloTest.Stats.Matches
   alias WweloTest.Stats.Wrestler
 
+  @start_elo 1200
+
   def save_singles_matches(year, month, page_number) do
     Enum.each(list_of_singles_matches(year, month, page_number), fn(match_list) ->
       case match_list do
@@ -139,7 +141,7 @@ defmodule DatabaseScraper do
   end
 
   def save_wrestler_to_database(nil, name) do
-    Stats.create_wrestler(%{"name" => name, "current_elo" => 1200})
+    Stats.create_wrestler(%{"name" => name, "current_elo" => @start_elo, "maximum_elo" => @start_elo, "minimum_elo" => @start_elo})
   end
   def save_wrestler_to_database(_, _) do
   end

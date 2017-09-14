@@ -5,6 +5,8 @@ defmodule WweloTest.Repo.Migrations.CreateWrestlers do
     create table(:wrestlers) do
       add :name, :string
       add :current_elo, :integer
+      add :maximum_elo, :integer
+      add :minimum_elo, :integer
 
       timestamps()
     end

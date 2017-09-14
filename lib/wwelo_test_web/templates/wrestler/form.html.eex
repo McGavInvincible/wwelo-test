@@ -18,6 +18,18 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :maximum_elo, class: "control-label" %>
+    <%= number_input f, :maximum_elo, class: "form-control" %>
+    <%= error_tag f, :maximum_elo %>
+  </div>
+
+  <div class="form-group">
+    <%= label f, :minimum_elo, class: "control-label" %>
+    <%= number_input f, :minimum_elo, class: "form-control" %>
+    <%= error_tag f, :minimum_elo %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
