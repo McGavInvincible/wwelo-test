@@ -96,24 +96,14 @@ defmodule DatabaseScraper do
 
     matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2)
 
-    {winner, loser} = case matchcard do
-      [{_, _, [winner]}, _, {_, _, [loser]}] -> {winner, loser}
-      [_, {_, _, [winner]}, _, {_, _, [loser]}] -> {winner, loser}
-      [{_, _, [winner]}, _, _, {_, _, [loser]}] -> {winner, loser}
-      [_, {_, _, [winner]}, _, _, {_, _, [loser]}] -> {winner, loser}
-      [{_, _, [winner]}, _, {_, _, [loser]}, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, {_, _, [loser]}, _] -> {winner, loser}
-      [{_, _, [winner]}, _, _, {_, _, [loser]}, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, _, {_, _, [loser]}, _] -> {winner, loser}
-      [{_, _, [winner]}, _, {_, _, [loser]}, _, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, {_, _, [loser]}, _, _] -> {winner, loser}
-      [{_, _, [winner]}, _, _, {_, _, [loser]}, _, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, _, {_, _, [loser]}, _, _] -> {winner, loser}
-      [{_, _, [winner]}, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
-      [{_, _, [winner]}, _, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
-      [_, {_, _, [winner]}, _, _, {_, _, [loser]}, _, _, _] -> {winner, loser}
-    end
+    matchcard = Enum.filter(matchcard, fn x -> case x
+      do
+        {"a", [{"href", _}] , _} -> true
+        _ -> false
+      end
+    end)
+
+    [{_, _, [winner]}, {_, _, [loser]}] = matchcard
 
     winner = case String.valid?(winner) do
       false -> Enum.join(for <<c::utf8 <- winner>>, do: <<c::utf8>>)
