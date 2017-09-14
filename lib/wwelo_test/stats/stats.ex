@@ -21,12 +21,12 @@ defmodule WweloTest.Stats do
   def list_wrestlers do
     elo_sort_query = from w in Wrestler,
       order_by: [desc: w.maximum_elo]
-    #
-    # wrestlers = Repo.all(elo_sort_query)
-    # |> Enum.zip(1..)
-    # |> Enum.map(fn {ix, w} ->
-    #   Map.put(w, :max_elo_ranking, ix)
-    end)
+
+    wrestlers = Repo.all(elo_sort_query)
+
+    wrestlers
+    |> Enum.with_index(1)
+    |> Enum.map(fn {w, ix} -> Map.put(w, :max_elo_ranking, ix) end)
   end
 
   @doc """

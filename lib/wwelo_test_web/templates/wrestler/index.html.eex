@@ -3,10 +3,11 @@
 <table class="table">
   <thead>
     <tr>
+      <th>Rank (Max. ELO)</th>
       <th>Name</th>
-      <th>Current elo</th>
-      <th>Maximum elo</th>
-      <th>Minimum elo</th>
+      <th>Curr. ELO</th>
+      <th>Max. ELO</th>
+      <th>Min. ELO</th>
 
       <th></th>
     </tr>
@@ -14,6 +15,7 @@
   <tbody>
 <%= for wrestler <- @wrestlers do %>
     <tr>
+      <td><%= wrestler.max_elo_ranking %></td>
       <td><%= wrestler.name %></td>
       <td><%= wrestler.current_elo %></td>
       <td><%= wrestler.maximum_elo %></td>

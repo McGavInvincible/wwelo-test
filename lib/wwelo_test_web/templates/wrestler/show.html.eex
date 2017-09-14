@@ -1,10 +1,6 @@
 <h2>Show Wrestler</h2>
 
 <ul>
-  <li>
-    <strong>Ranking:</strong>
-    <%= @wrestler.max_elo_ranking %>
-  </li>
 
   <li>
     <strong>Name:</strong>
