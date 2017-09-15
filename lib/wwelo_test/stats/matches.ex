@@ -5,7 +5,7 @@ defmodule WweloTest.Stats.Matches do
 
 
   schema "matches" do
-    field :date, :string
+    field :date, :date
     field :loser, :string
     field :loser_elo, :integer
     field :winner, :string

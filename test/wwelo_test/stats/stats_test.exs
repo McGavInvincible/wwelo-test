@@ -198,4 +198,72 @@ defmodule WweloTest.StatsTest do
       assert %Ecto.Changeset{} = Stats.change_wrestler(wrestler)
     end
   end
+
+  describe "matches" do
+    alias WweloTest.Stats.Matches
+
+    @valid_attrs %{date: ~D[2010-04-17], loser: "some loser", loser_elo: 42, winner: "some winner", winner_elo: 42}
+    @update_attrs %{date: ~D[2011-05-18], loser: "some updated loser", loser_elo: 43, winner: "some updated winner", winner_elo: 43}
+    @invalid_attrs %{date: nil, loser: nil, loser_elo: nil, winner: nil, winner_elo: nil}
+
+    def matches_fixture(attrs \\ %{}) do
+      {:ok, matches} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Stats.create_matches()
+
+      matches
+    end
+
+    test "list_matches/0 returns all matches" do
+      matches = matches_fixture()
+      assert Stats.list_matches() == [matches]
+    end
+
+    test "get_matches!/1 returns the matches with given id" do
+      matches = matches_fixture()
+      assert Stats.get_matches!(matches.id) == matches
+    end
+
+    test "create_matches/1 with valid data creates a matches" do
+      assert {:ok, %Matches{} = matches} = Stats.create_matches(@valid_attrs)
+      assert matches.date == ~D[2010-04-17]
+      assert matches.loser == "some loser"
+      assert matches.loser_elo == 42
+      assert matches.winner == "some winner"
+      assert matches.winner_elo == 42
+    end
+
+    test "create_matches/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Stats.create_matches(@invalid_attrs)
+    end
+
+    test "update_matches/2 with valid data updates the matches" do
+      matches = matches_fixture()
+      assert {:ok, matches} = Stats.update_matches(matches, @update_attrs)
+      assert %Matches{} = matches
+      assert matches.date == ~D[2011-05-18]
+      assert matches.loser == "some updated loser"
+      assert matches.loser_elo == 43
+      assert matches.winner == "some updated winner"
+      assert matches.winner_elo == 43
+    end
+
+    test "update_matches/2 with invalid data returns error changeset" do
+      matches = matches_fixture()
+      assert {:error, %Ecto.Changeset{}} = Stats.update_matches(matches, @invalid_attrs)
+      assert matches == Stats.get_matches!(matches.id)
+    end
+
+    test "delete_matches/1 deletes the matches" do
+      matches = matches_fixture()
+      assert {:ok, %Matches{}} = Stats.delete_matches(matches)
+      assert_raise Ecto.NoResultsError, fn -> Stats.get_matches!(matches.id) end
+    end
+
+    test "change_matches/1 returns a matches changeset" do
+      matches = matches_fixture()
+      assert %Ecto.Changeset{} = Stats.change_matches(matches)
+    end
+  end
 end

@@ -3,8 +3,8 @@ defmodule WweloTestWeb.MatchesControllerTest do
 
   alias WweloTest.Stats
 
-  @create_attrs %{date: "some date", loser: "some loser", loser_elo: 42, winner: "some winner", winner_elo: 42}
-  @update_attrs %{date: "some updated date", loser: "some updated loser", loser_elo: 43, winner: "some updated winner", winner_elo: 43}
+  @create_attrs %{date: ~D[2010-04-17], loser: "some loser", loser_elo: 42, winner: "some winner", winner_elo: 42}
+  @update_attrs %{date: ~D[2011-05-18], loser: "some updated loser", loser_elo: 43, winner: "some updated winner", winner_elo: 43}
   @invalid_attrs %{date: nil, loser: nil, loser_elo: nil, winner: nil, winner_elo: nil}
 
   def fixture(:matches) do
@@ -60,7 +60,7 @@ defmodule WweloTestWeb.MatchesControllerTest do
       assert redirected_to(conn) == matches_path(conn, :show, matches)
 
       conn = get conn, matches_path(conn, :show, matches)
-      assert html_response(conn, 200) =~ "some updated date"
+      assert html_response(conn, 200) =~ "some updated loser"
     end
 
     test "renders errors when data is invalid", %{conn: conn, matches: matches} do

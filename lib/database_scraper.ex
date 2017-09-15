@@ -92,7 +92,7 @@ defmodule DatabaseScraper do
   def save_matches_to_database([_, {_, _, [date]}, _, matchcard, _]) do
 
     [day, month, year] = String.split(date, ".")
-    date = year <> month <> day
+    date = Ecto.Date.cast({year, month, day}) |> elem(1)
 
     matchcard = Floki.find(matchcard, ".MatchCard") |> Enum.at(0) |> elem(2)
 
